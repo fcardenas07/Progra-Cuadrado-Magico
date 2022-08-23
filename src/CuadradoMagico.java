@@ -9,9 +9,19 @@ public class CuadradoMagico {
 
     private static void jugarCuadradoMagico() {
         int[][] cuadrado = crearCuadrado();
-        llenarCuadrado(cuadrado);
-        mostrarCuadrado(cuadrado);
-        boolean esCuadradoMagico = verificarCuadradoMagico(cuadrado);
+        int contador = 0;
+        boolean esCuadradoMagico;
+
+        do {
+            llenarCuadrado(cuadrado);
+            mostrarCuadrado(cuadrado);
+            System.out.println();
+            esCuadradoMagico = verificarCuadradoMagico(cuadrado);
+            contador++;
+        } while (!esCuadradoMagico);
+
+        mostrarResultado(esCuadradoMagico);
+        System.out.println("Cuadrado numero: " + contador);
     }
 
     private static boolean verificarCuadradoMagico(int[][] cuadrado) {
@@ -19,10 +29,36 @@ public class CuadradoMagico {
         int[] sumaColumnas = sumarColumnas(cuadrado);
         int[] sumaDiagonales = sumarDiagonales(cuadrado);
 
-        System.out.println(Arrays.toString(sumaFilas));
-        System.out.println(Arrays.toString(sumaColumnas));
-        System.out.println(Arrays.toString(sumaDiagonales));
-        return false;
+        ArrayList<int[]> sumasCuadrado = crearArrayList(sumaFilas, sumaColumnas, sumaDiagonales);
+
+        return comprobarSumasCuadrado(sumasCuadrado);
+    }
+
+    private static void mostrarResultado(boolean esMagico) {
+        if (esMagico) {
+            System.out.println("Es un cuadrado Magico");
+        } else {
+            System.out.println("NO es un cuadrado Magico");
+        }
+    }
+
+    private static boolean comprobarSumasCuadrado(ArrayList<int[]> sumasCuadrado) {
+        for (int[] suma : sumasCuadrado) {
+            for (int k : suma) {
+                if (k != 15) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private static ArrayList<int[]> crearArrayList(int[] sumaFilas, int[] sumaColumnas, int[] sumaDiagonales) {
+        ArrayList<int[]> sumas = new ArrayList<>();
+        sumas.add(sumaFilas);
+        sumas.add(sumaColumnas);
+        sumas.add(sumaDiagonales);
+        return sumas;
     }
 
     private static int[] sumarDiagonales(int[][] cuadrado) {
